@@ -2,6 +2,11 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const socket = io();
 
+// Get username and room from URL
+const {username, room} = Qs.parse(location.search, {
+    ignoreQueryPrefix: true
+});
+
 // Message from server
 socket.on('message', (message) => {
     console.log(message);
@@ -10,6 +15,9 @@ socket.on('message', (message) => {
     // Scroll down
     chatMessages.scrollTop = chatMessages.scrollHeight;
 });
+
+// Join Chatroom
+socket.emit('joinRoom', {username, room});
 
 // On message submit
 chatForm.addEventListener('submit', (event) => {
